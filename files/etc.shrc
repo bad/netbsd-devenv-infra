@@ -17,5 +17,13 @@ case "$-" in *i*)		# interactive
 	# This file is used by shells that might not support
 	# set -o tabcomplete, so check before trying to use it.
 	( set -o tabcomplete 2>/dev/null ) && set -o tabcomplete
+
+	# local additions
+	alias g=egrep
+	alias j=jobs
+	alias l="ls -l"
+	alias lf="ls -F"
+	alias m="less -n"
+	alias t=tail
 	;;
 esac
