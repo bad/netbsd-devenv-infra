@@ -10,7 +10,7 @@ case "$-" in *i*)		# interactive
 		HOST="${HOST%.*}" # Strip from first '.' on.
 	fi
 	# only prepend HOST if it isn't there already.
-	if ! expr "$PS1" : "${HOST}"; then
+	if ! expr "$PS1" : "${HOST}" >/dev/null; then
 		PS1="${HOST%}$PS1"
 	fi
 	set -o emacs
