@@ -15,5 +15,19 @@ case "$-" in *i*)
 	,wrsd1() { eval RUMP_SERVER=${RS} LD_BIND_NOW=1 RUMP_NCPU=1 $@; }
 	,mountsrc() { sudo mount -t9p -r -o-c,-u /dev/vio9p0 /usr/src; }
 	,mountobj() { sudo mount -t9p -o-c,-u /dev/vio9p1 /usr/obj; }
+	,mount9p() {		# mount all the vio9p devs
+	    sysctl hw.vio9p 2>/dev/null |
+		{
+		    IFS="$IFS.="
+		    while read _ _ dev _ tag; do
+			[ ! -d "/usr/$tag" ] &&
+			    { echo 1<&2 "skipping $tag: mount point missing";
+			      continue; }
+			rflag=""
+			[ "$tag" = src ] && rflag=-r
+			echo sudo mount -t9p $rflag -o-c,-u /dev/$dev /usr/$tag
+		    done
+		}
+	}
 	;;
 esac
