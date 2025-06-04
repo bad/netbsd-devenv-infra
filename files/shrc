@@ -21,13 +21,26 @@ case "$-" in *i*)
 		    IFS="$IFS.="
 		    while read _ _ dev _ tag; do
 			[ ! -d "/usr/$tag" ] &&
-			    { echo 1<&2 "skipping $tag: mount point missing";
+			    { echo 1>&2 "skipping $tag: mount point missing";
 			      continue; }
 			rflag=""
 			[ "$tag" = src ] && rflag=-r
-			echo sudo mount -t9p $rflag -o-c,-u /dev/$dev /usr/$tag
+			sudo mount -t9p $rflag -o-c,-u /dev/$dev /usr/$tag
 		    done
 		}
+	}
+	,mountnfs() {		# mount all the locally exported mount points
+	    local h=host
+	    showmount -e $h | egrep '127(\.[0-9]+)*\.1' |
+		while read dir; do
+		    mp=${dir##*/}
+		    [ ! -d "/usr/$mp" ] &&
+			{ echo 1>&2 "skipping $mp: mount point missing";
+			  continue; }
+		    rflag=""
+		    [ "$mp" = src ] && rflag=-r
+		    sudo mount -tnfs $rflag -o3Til $h:$mp /usr/$dir
+		done
 	}
 	;;
 esac
