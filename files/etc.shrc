@@ -4,7 +4,7 @@
 
 ll(){ ls -l ${1+"$@"}; }
 
-case "$-" in *i*)
+case "$-" in *i*)		# interactive
 	if /bin/test -z "${HOST}"; then
 		HOST="$(hostname)"
 		HOST="${HOST%.*}" # Strip from first '.' on.
