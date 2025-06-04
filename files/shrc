@@ -6,5 +6,14 @@ fi
 
 case "$-" in *i*)
 	# interactive mode settings go here
+	RS=unix:///tmp/rs
+	# usage: RUMPHIJACK=xxxx wrh comand ...
+	,wrh() { eval LD_PRELOAD=/usr/lib/librumphijack.so RUMP_SERVER=${RS} $@; }
+	,wrs() { eval RUMP_SERVER=${RS} $@; }
+	# debugging versions
+	,wrhd1() { eval LD_BIND_NOW=1 RUMP_NCPU=1 LD_PRELOAD=/usr/lib/librumphijack.so RUMP_SERVER=${RS} $@; }
+	,wrsd1() { eval RUMP_SERVER=${RS} LD_BIND_NOW=1 RUMP_NCPU=1 $@; }
+	,mountsrc() { sudo mount -t9p -r -o-c,-u /dev/vio9p0 /usr/src; }
+	,mountobj() { sudo mount -t9p -o-c,-u /dev/vio9p1 /usr/obj; }
 	;;
 esac
