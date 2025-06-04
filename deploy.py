@@ -35,6 +35,15 @@ if 'asroot' in host.groups:
         replace="ddb.onpanic?=1",
         ensure_newline=True,
     )
+    f = "/etc/hosts"
+    for addr in ("fec0::2", "10.0.2.2",):
+        files.line(
+            name=f'address {addr} for VM host in {f}',
+            path=f,
+            line=f'^{addr}\\s+host$',
+            replace=f'{addr} 		host',
+            present=True,
+        )
     server.shell(
         name='Apply /etc/sysctl.conf',
         commands="/etc/rc.d/sysctl start",
