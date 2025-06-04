@@ -1,0 +1,12 @@
+set substitute-path /Users/bad/netbsd-gsoc/src/ /usr/src/
+#add-auto-load-safe-path /usr/obj/obj.amd64
+
+# save history
+set history size 1000
+set history save on
+
+# debug-file-directory only works for programs with absolute path names
+#set debug-file-directory /usr/libdata/debug:/usr/obj/destdir.amd64/usr/libdata/debug/usr/sbin
+#set debug-file-directory /usr/libdata/debug:/usr/obj/destdir.amd64/usr/libdata/debug
+#set debug-file-directory /usr/libdata/debug:/usr/obj/destdir.amd64/usr/libdata/debug/usr/sbin/./
+#set debug-file-directory /usr/obj/destdir.amd64/usr/libdata/debug/usr/sbin

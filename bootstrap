@@ -1,0 +1,25 @@
+#!/bin/sh
+# bootstrap infrastructure
+
+warn() { echo 1>&2 "warning: $@"; }
+
+warnmsg() { echo 1>&2 "$@"; }
+
+adios() { warnmsg "$@"; exit 2; }
+
+missing_prereqs=
+check_prereq() {
+    [ $# -ne 1 ] && adios "usage: check_prereq command"
+    command -v $1 > /dev/null ||
+	{ missing_prereqs="$missing_prereqs $1"; warnmsg "Please install '$1'"; }
+}
+
+for p in python pipenv; do
+    check_prereq $p
+done
+
+[ -n "$missing_prereqs" ] && adios "error: missing prerequisites:$missing_prereqs. adios!"
+
+pipenv install
+
+echo "now run './deploy'"
