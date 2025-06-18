@@ -20,12 +20,13 @@ def local_hostname():
                                     platform.node())).split('.')[0]
 
 if 'asroot' in host.groups:
-    f = "/etc/shrc"
-    files.put(
-        name=f'Ensure {f}',
-        dest=f,
-        src='files/etc.shrc',
-    )
+    for f in ("shrc", "login.conf"):
+        d=f'/etc/{f}'
+        files.put(
+            name=f'Ensure {d}',
+            dest=d,
+            src=f'files/etc.{f}',
+        )
 
     f = "/etc/sysctl.conf"
     sysctl_cnf = files.line(
