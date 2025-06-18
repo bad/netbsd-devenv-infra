@@ -4,9 +4,10 @@
 import os, platform
 import functools
 
-# from pyinfra import config
+from pyinfra import config
 from pyinfra import host
 from pyinfra.operations import files, server
+from pyinfra.facts.server import Path
 
 @functools.cache                # probably over-optimized but more correct
                                 # as we're interested in the value "at
@@ -18,6 +19,11 @@ def local_hostname():
     # c.f. https://stackoverflow.com/questions/4271740#comment73605463_4271873
     os.getenv('HOSTNAME',os.getenv('COMPUTERNAME',
                                     platform.node())).split('.')[0]
+
+# fix up the PATH to include the sbin directories if necessary
+path = host.get_fact(Path)
+if "/sbin" not in path:
+    config.ENV['PATH'] = '/usr/sbin:/sbin:' + path
 
 if 'asroot' in host.groups:
     for f in ("shrc", "login.conf"):
