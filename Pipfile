@@ -4,7 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyinfra = "*"
+#pyinfra = ">=3.3"
+pyinfra = { git = "https://github.com/bad/pyinfra.git", ref="3.x-local" }
+#pyinfra = { path = "./pyinfra/", editable = true, extras = ["test"] }
 
 [dev-packages]
 
