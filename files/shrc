@@ -39,7 +39,7 @@ case "$-" in *i*)
 			  continue; }
 		    rflag=""
 		    [ "$mp" = src ] && rflag=-r
-		    sudo mount -tnfs $rflag -o3Til $h:$mp /usr/$dir
+		    sudo mount -tnfs $rflag -o-3Til $h:$mp /usr/$dir
 		done
 	}
 	;;
