@@ -32,14 +32,14 @@ case "$-" in *i*)
 	,mountnfs() {		# mount all the locally exported mount points
 	    local h=host
 	    showmount -e $h | egrep '127(\.[0-9]+)*\.1' |
-		while read dir; do
-		    mp=${dir##*/}
+		while read exp _; do
+		    mp=${exp##*/}
 		    [ ! -d "/usr/$mp" ] &&
 			{ echo 1>&2 "skipping $mp: mount point missing";
 			  continue; }
 		    rflag=""
 		    [ "$mp" = src ] && rflag=-r
-		    sudo mount -tnfs $rflag -o-3Til $h:$mp /usr/$dir
+		    sudo mount -tnfs $rflag -o-3Til "$h:$exp" /usr/$mp
 		done
 	}
 	;;
