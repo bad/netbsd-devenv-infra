@@ -43,13 +43,20 @@ if 'asroot' in host.groups:
         ensure_newline=True,
     )
     f = "/etc/hosts"
+    files.block(
+        name=f'Ensure VM host addresses in {f}',
+        path=f,
+        content=['fec0::2 		host',
+                 '10.0.2.2 		host'],
+    )
+    # remove the lines added previously to avoid duplicates
     for addr in ("fec0::2", "10.0.2.2",):
         files.line(
             name=f'address {addr} for VM host in {f}',
             path=f,
             line=f'^{addr}\\s+host$',
             replace=f'{addr} 		host',
-            present=True,
+            present=False,
         )
     server.shell(
         name='Apply /etc/sysctl.conf',
